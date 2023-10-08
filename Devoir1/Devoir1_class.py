@@ -32,8 +32,12 @@ class Mappy:
 
         while N != []:
             for i in N:
-                d[i] = min(d[i], self.distance(start, i) + d[start])
-            start = min(N ,key=lambda x : d[x])
+                diPrime = self.distance(self.t, self.p, start, i) + d[start][0]
+                if diPrime < d[i][0]:
+                    d[i][0] = diPrime
+                    d[i][1] = d[start][1] +1    
+                
+            start = min(N ,key=lambda x : d[x][0])
             N.remove(start)
 
         return d
