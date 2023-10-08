@@ -22,8 +22,8 @@ def distance(t, p, start, stop):
 def dijkstra(t, p, start):
     Ns_barre = extract_cities(t)
     Ns_barre.remove(start)
+    c=0
     d = {}
-    c = 0
     for i in Ns_barre:
         d[i] = float("inf")
 
