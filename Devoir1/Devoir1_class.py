@@ -38,8 +38,3 @@ class Mappy:
 
         return d
     
-trajets = ["S-K", "S-J", "K-J", "K-M", "J-L", "M-L", "L-N"]
-poids = [2, 4, 5, 3, 10, 4, 6]
-
-test = Mappy(trajets, poids)
-print(test.dijkstra("S"))

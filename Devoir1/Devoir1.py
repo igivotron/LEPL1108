@@ -25,15 +25,20 @@ def dijkstra(t, p, start):
     N.remove(start)
     d= {}
     for i in N:
-        d[i] = distance(t, p, start, i)
+        d[i] = [distance(t, p, start, i), 1] # liste contenant la distance et le nombre de transfert
     
     start = min(d, key=d.get)
     N.remove(start)
 
     while N != []:
         for i in N:
-            d[i] = min(d[i], distance(t, p, start, i) + d[start])
-        start = min(N ,key=lambda x : d[x])
+            diPrime = distance(t, p, start, i) + d[start][0]
+            if diPrime < d[i][0]:
+                d[i][0] = diPrime
+                d[i][1] = d[start][1] +1     # Non fonctionnel car se décale
+
+            #d[i] = min(d[i], distance(t, p, start, i) + d[start])
+        start = min(N ,key=lambda x : d[x][0])
         N.remove(start)
 
     return d
