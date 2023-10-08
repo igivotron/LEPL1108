@@ -19,29 +19,24 @@ def distance(t, p, start, stop):
             return p[i]
     return float("inf")
 
-def dijkstra(t, p, start):
-    Ns_barre = extract_cities(t)
-    Ns_barre.remove(start)
-    d = {}
-    c = 0
-    for i in Ns_barre:
-        d[i] = float("inf")
 
-    while Ns_barre != []:
-        l = [distance(t, p, start, Ns_barre[i]) for i in range(len(Ns_barre))]
-        for i in range(len(Ns_barre)):
-            d[Ns_barre[i]] = min(d[Ns_barre[i]], l[i] + c)
-        dv = min(l)
-        v = Ns_barre[l.index(dv)]
-        c += dv # Cause des erreurs car se se réénitialise pas si on change de branche
-        Ns_barre.remove(v)
-        start = v
+def dijkstra(t, p, start):
+    N = extract_cities(t)
+    N.remove(start)
+    d= {}
+    for i in N:
+        d[i] = distance(t, p, start, i)
+    
+    start = min(d, key=d.get)
+    N.remove(start)
+
+    while N != []:
+        for i in N:
+            d[i] = min(d[i], distance(t, p, start, i) + d[start])
+        start = min(N ,key=lambda x : d[x])
+        N.remove(start)
 
     return d
 
-
-
-
-
-
-print(dijkstra(trajets, poids, "S"))
+d = dijkstra(trajets, poids, "M")
+print(d)
