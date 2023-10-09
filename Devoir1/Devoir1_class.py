@@ -45,14 +45,14 @@ class Mappy:
         N.remove(start)
         d= {}
         for i in N:
-            d[i] = [self.distance(start, i),0]
+            d[i] = [15 + self.distance(start, i) + 15,0]
         
         start = min(d, key=d.get)
         N.remove(start)
 
         while N != []:
             for i in N:
-                diPrime = self.distance(start, i) + d[start][0]
+                diPrime = self.distance(start, i) + d[start][0] +15
                 if diPrime < d[i][0]:
                     d[i][0] = diPrime
                     d[i][1] = d[start][1] +1
@@ -70,19 +70,20 @@ train = carte.dijkstra(ville_depart)
 ville = list(train.keys())
 min_distances_train = []
 min_distances_avion = []
-for i in train:
-    print(i,train[i])
-    min_distances_train.append(train[i][0] + 15*train[i][1] + 30)
 
-for i in durees_voldirect:
-    min_distances_avion.append(i+180)
+for i in range(len(ville)):
+    min_distances_train.append(train[ville[i]][0])
+    min_distances_avion.append(durees_voldirect[i]+180)
 
 count_train = 0
 for i in range(len(min_distances_train)):
     if min_distances_avion[i] + sacrifice > min_distances_train[i]:
         count_train +=1
 
-
+print(ville)
+print(min_distances_train)
+print(min_distances_avion)
+print(count_train)
 
 
 

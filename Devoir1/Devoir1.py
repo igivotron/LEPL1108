@@ -39,17 +39,26 @@ def dijkstra(t, p, start):
     N.remove(start)
     d= {}
     for i in N: # Première boucle, initialisation du dictionnaire
-        d[i] = [distance(t, p, start, i), 0]
-    
+        d[i] = [15 + distance(t, p, start, i) + 15, 0]
+
     start = min(d, key=d.get)
     N.remove(start)
-
+    j = 0
     while N != []:
         for i in N:
-            d[i] = min(d[i], distance(t, p, start, i) + d[start])
-        start = min(N ,key=lambda x : d[x]) # On cherche le minimum dans la liste N à partir du dictionnaire
+            diprime = distance(t, p, start, i) + d[start][0] + 15
+            if diprime < d[i][0]:
+                d[i][0] = diprime
+                d[i][1] = d[start][1] +1
+
+        for i in d:
+            print(i, d[i])
+
+        start = min(N, key=lambda x : d[x][0])
         N.remove(start)
+        
+    return d
 
-    return d # retourne un dictionnaire
+ 
 
-print(extract_cities(trajets_train))
+dijkstra(trajets_train, durees_train, "BRU")
