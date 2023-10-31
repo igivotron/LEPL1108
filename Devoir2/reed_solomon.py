@@ -64,6 +64,18 @@ class BinaryDomains():
             string: Forme binaire de l'entier en string.
         """
         return ''.join(str(1 & int(n) >> i) for i in range(8)[::-1])
+
+    def addCayley(self, x, y):
+        '''
+        Compare deux entrées dans la table de Cayley d'addition
+        :param x: 0 ou 1
+        :param y: 0 ou 1
+        :return: la sortie du tableau pour les deux entrées x et y
+        '''
+
+        if (x == "0" and y == "1") or (x == "1" and y == "0"):
+            return "1"
+        return "0"
     
     def add(self, x, y):
         """
@@ -80,7 +92,10 @@ class BinaryDomains():
         """
 
         #BEGIN TODO
-        return 0
+        z = ""
+        for i in range(len(x)):
+            z += self.addCayley(x[i], y[i])
+        return z
         #END TODO
 
     def multiply(self, x, y, pol):
