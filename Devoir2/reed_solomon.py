@@ -98,6 +98,19 @@ class BinaryDomains():
         return z
         #END TODO
 
+    def transformToBinary(self, x):
+        '''
+        Transforme un polynome à coefficients quelconques à coefficents binaires
+        :param x: Une liste contenant les coefficients non binaires
+        :return: Une liste contenant les coefficient binaires
+        '''
+        for i in range(len(x)):
+            if x[i] % 2 == 0:
+                x[i] = 0
+            else:
+                x[i] = 1
+        return x
+
     def multiply(self, x, y, pol):
         """
         Multiplie deux séquences binaires (x*y) reçues sous la forme de string, en utilisant
@@ -114,7 +127,17 @@ class BinaryDomains():
             string: Résultat de la multiplication x*y en binaire.
         """
         #BEGIN TODO
-        return 0
+        polX = numpy.array([int(i) for i in x])
+        polY = numpy.array([int(i) for i in y])
+        polC = numpy.array([int(i) for i in pol])
+        mult = self.transformToBinary(numpy.polymul(polX, polY))
+        mod = self.transformToBinary(numpy.polydiv(mult, polC)[1])
+
+        z = "0"*(8-len(mod))
+        for i in mod:
+            z += str(int(i))
+
+        return z
         #END TODO
 
     def inverse(self, x, pol):
@@ -131,7 +154,12 @@ class BinaryDomains():
             string: Résultat de l'inversion en binaire.
         """
         #BEGIN TODO
-        return 0
+        z = "00000001"
+        for i in range(7):
+            x = self.multiply(x, x, pol)
+            z = self.multiply(z, x, pol)
+
+        return z
         #END TODO
 
 class ReedSolomon():
