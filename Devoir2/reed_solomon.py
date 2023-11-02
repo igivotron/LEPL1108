@@ -190,7 +190,7 @@ class ReedSolomon():
         """
         y = polynome[-1]
         for i in range(len(polynome)-2, -1, -1):
-            y = self.f.add( self.f.multiply(y, x, self.pol), polynome[i] ) 
+            y = self.f.add(self.f.multiply(y, x, self.pol), polynome[i])
         return y
 
     def encoding(self, message_original):
@@ -204,7 +204,9 @@ class ReedSolomon():
             (liste de string de taille n): Le message encodé.
         """
         #BEGIN TODO
-        return []
+        a = self.t.translateToMachine(message_original)
+        I = [self._evaluate(a, self.y[i]) for i in range(self.n)]
+        return I
         #END TODO
 
 
