@@ -209,7 +209,18 @@ class ReedSolomon():
         return I
         #END TODO
 
-
+    def vandermonde(self, y):
+        '''
+        Créé une matrice de Vandermonde
+        :param y: (liste de string de taille k): Les points yi.
+        :return: matrice de Vandermonde
+        '''
+        V = numpy.zeros((self.k, self.k))
+        for i in range(self.k):
+            V[i][0] = "00000001"
+            for j in range(self.k - 1):
+                V[i][j + 1] = self.f.multiply(V[i][j], y[i], self.pol)
+        return V
     def gaussian_elimination(self, y, I):
         """
         Ex: k = 4: retourne les coefficients (ai) du polynôme A(Y) = a0 + a1*Y + a2*Y^2 + a3*Y^3
@@ -227,7 +238,23 @@ class ReedSolomon():
             (liste de string de taille k): Les coefficients (ai) de l'interpolation.
         """
         #BEGIN TODO
-        return []
+        V = self.vandermonde(y)
+        Y = numpy.array([I])
+        P = numpy.concatenate((V, Y.T), axis=1) # matrice augmentée
+        x = numpy.zeros(self.k)
+
+        for i in range(self.k):
+            for j in range(self.k):
+                if i!=j:
+                    ### P[i,j]/P[i,i]
+                    r = self.f.multiply(P[j, i], self.f.inverse(P[i, i], self.pol), self.pol)
+                    for m in range(self.k+1):
+                        ### a = -a
+                        P[j,m] = self.f.add(P[j, m], self.f.multiply(r, P[i, m], self.pol))
+        for i in range(self.k):
+            x[i] = self.f.multiply(P[i, self.k], self.f.inverse(P[i, i], self.pol), self.pol)
+
+        return x
         #END TODO
 
     def decoding(self, message_corrupted):
@@ -242,5 +269,6 @@ class ReedSolomon():
             (liste de string de taille k): Le message décodé. (si bool = False, alors retourner []).
         """
         #BEGIN TODO
+        print(message_corrupted)
         return False,[]
         #END TODO
