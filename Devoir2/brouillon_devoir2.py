@@ -44,8 +44,38 @@ def inverse(x, pol):
     return z
 
 
+def vandermonde(y):
+    k = len(y)
+    V = np.zeros((k,k))
+    for i in range(k):
+        V[i][0] = 1
+        for j in range(k-1):
+            V[i][j+1] = V[i][j] * y[i]
+    return V
+
+def gaussian_elimination(y, I):
+    V = vandermonde(y)
+    Y = np.array([I])
+    Z = np.concatenate((V, Y.T), axis=1)
+    k = len(y)
+
+    x = np.zeros(k)
+    for i in range(k):
+        for j in range(k):
+            if i != j:
+                r = Z[j, i] / Z[i, i]
+                for m in range(k + 1):
+                    Z[j, m] = Z[j, m] - r * Z[i, m]
+    for i in range(k):
+        x[i] = Z[i, k] / Z[i, i]
+    print(x)
+    return x
+
+
 x = "01011000"
-
 pol = "101001101"
+y = [1, 2, 3, 4, 5]
+I = [5, 4, 3, 2, 1]
 
-inverse(x, pol)
+A = np.array([i for i in x])
+print(A)
