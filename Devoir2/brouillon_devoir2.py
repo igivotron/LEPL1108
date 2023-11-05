@@ -57,6 +57,7 @@ def gaussian_elimination(y, I):
     V = vandermonde(y)
     Y = np.array([I])
     Z = np.concatenate((V, Y.T), axis=1)
+    print(Z)
     k = len(y)
 
     x = np.zeros(k)
@@ -68,7 +69,6 @@ def gaussian_elimination(y, I):
                     Z[j, m] = Z[j, m] - r * Z[i, m]
     for i in range(k):
         x[i] = Z[i, k] / Z[i, i]
-    print(x)
     return x
 
 
@@ -77,5 +77,4 @@ pol = "101001101"
 y = [1, 2, 3, 4, 5]
 I = [5, 4, 3, 2, 1]
 
-A = np.array([i for i in x])
-print(A)
+gaussian_elimination(y,I)

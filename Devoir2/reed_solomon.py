@@ -215,7 +215,7 @@ class ReedSolomon():
         :param y: (liste de string de taille k): Les points yi.
         :return: matrice de Vandermonde
         '''
-        V = numpy.zeros((self.k, self.k))
+        V = numpy.full((self.k, self.k), "00000000")
         for i in range(self.k):
             V[i][0] = "00000001"
             for j in range(self.k - 1):
@@ -241,7 +241,7 @@ class ReedSolomon():
         V = self.vandermonde(y)
         Y = numpy.array([I])
         P = numpy.concatenate((V, Y.T), axis=1) # matrice augmentée
-        x = numpy.zeros(self.k)
+        x = []
 
         for i in range(self.k):
             for j in range(self.k):
@@ -252,7 +252,8 @@ class ReedSolomon():
                         ### a = -a
                         P[j,m] = self.f.add(P[j, m], self.f.multiply(r, P[i, m], self.pol))
         for i in range(self.k):
-            x[i] = self.f.multiply(P[i, self.k], self.f.inverse(P[i, i], self.pol), self.pol)
+            x1 = self.f.multiply(P[i, self.k], self.f.inverse(P[i, i], self.pol), self.pol)
+            x.append(x1)
 
         return x
         #END TODO
@@ -269,6 +270,24 @@ class ReedSolomon():
             (liste de string de taille k): Le message décodé. (si bool = False, alors retourner []).
         """
         #BEGIN TODO
-        print(message_corrupted)
-        return False,[]
+        nbrCorrupted = 0
+        messageNotCorrupted = []
+        y = []
+        for i in range(len(message_corrupted)):
+            if "x" in message_corrupted[i]:
+                nbrCorrupted +=1
+            else:
+                messageNotCorrupted.append(message_corrupted[i])
+                y.append(self.y[i])
+
+        minSafe = self.n-self.k
+        if nbrCorrupted > minSafe:
+            return False,[]
+        
+        I = messageNotCorrupted[:-len(messageNotCorrupted)+self.k]
+        Y = y[:-len(y)+self.k]
+        G = self.gaussian_elimination(Y, I)
+        message = self.t.translateToHuman(G)
+        return True,message
+        
         #END TODO

@@ -1,6 +1,8 @@
 from reed_solomon import *
+import time
 
 if __name__ == "__main__":
+    start = time.time()
     test1 = ["10100011", "10110100", "00010111"]
     test2 = ["10101111", "11000110", "01101001"]
     test3 = ["11001101", "01001001","101001101", "01100111"]
@@ -60,3 +62,5 @@ if __name__ == "__main__":
 
     print("Votre note pour les tests 'decoding' est de "+str(SCORE)+"/1.5")
 
+    end = time.time()
+    print(end-start)
