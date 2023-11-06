@@ -34,6 +34,18 @@ def multiply(x, y, pol):
 
     return z
 
+def multiply2(x, y, pol):
+    mult = "0"*8
+    while y != "0"*8:
+        if y[-1] == "1":
+            mult = add(mult, x)
+        x += "0"
+        if x[0] == "1":
+            x = add(x, pol)[1:]
+        y = "0" + y[:-1]
+    return mult
+
+
 
 def inverse(x, pol):
     z = "00000001"
@@ -72,9 +84,13 @@ def gaussian_elimination(y, I):
     return x
 
 
-x = "01011000"
+x = "11010110"
+z = "00101010"
 pol = "101001101"
+
 y = [1, 2, 3, 4, 5]
 I = [5, 4, 3, 2, 1]
 
-gaussian_elimination(y,I)
+
+print(multiply(x,z,pol))
+print(multiply2(x,z,pol))
