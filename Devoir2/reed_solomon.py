@@ -127,19 +127,20 @@ class BinaryDomains():
             string: Résultat de la multiplication x*y en binaire.
         """
         #BEGIN TODO
-        polX = numpy.array([int(i) for i in x])
-        polY = numpy.array([int(i) for i in y])
-        polC = numpy.array([int(i) for i in pol])
-        mult = self.transformToBinary(numpy.polymul(polX, polY))
-        mod = self.transformToBinary(numpy.polydiv(mult, polC)[1])
-
-        z = "0"*(8-len(mod))
-        for i in mod:
-            z += str(int(i))
-
-        return z
+        mult = "0"*8
+        while y != "0"*8:
+            if y[-1] == "1":
+                mult = self.add(mult, x)
+            x += "0"
+            if x[0] == "1":
+                x = self.add(x, pol)[1:]
+            else:
+                x = x[1:]
+            y = "0" + y[:-1]
+        return mult
         #END TODO
-
+    
+    
     def inverse(self, x, pol):
         """
         Inverse un élément x du corps donné (donne x^(-1)) sous la forme d'une séquence binaire.

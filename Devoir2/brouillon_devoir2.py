@@ -42,6 +42,8 @@ def multiply2(x, y, pol):
         x += "0"
         if x[0] == "1":
             x = add(x, pol)[1:]
+        else:
+            x = x[1:]
         y = "0" + y[:-1]
     return mult
 
